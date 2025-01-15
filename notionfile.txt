@@ -39,12 +39,3 @@ Commit means taking a current snapshot of the file, means saving the current sta
 
 When you change something after committing something on  git, git will identify those small changes and will tell you when you check the status. If you want to see the changes enter, `git diff` .
 
-## Environments in Git
-
-There are three different environment where files exist. Those are 
-
-1. Working Environment
-2. Stage - Waiting location to commit the files
-3. Commit - Entry to the history books 
-
-Before adding all the files exist in the working environment. If have files that are ready to commit you can put those file to the stage location. Once you commit all it will commit the files that are in the staging location not the once that are in the working environment.
