@@ -13,7 +13,7 @@ const UserRegister = () => {
     password: "",
     Phone: "",
     DateOfBirth: "",
-    image: "", // We'll store only the image name (file name) here
+    image: null, // Store the actual file object
   };
 
   const validationSchema = Yup.object({
@@ -28,13 +28,24 @@ const UserRegister = () => {
       .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
       .required("Phone number is required"),
     DateOfBirth: Yup.date().required("Date of birth is required"),
-    image: Yup.string().required("Image name is required"), // Store only the image name
+    image: Yup.mixed().required("Image is required"),
   });
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      // Send form data (only the name/path, not the file itself)
-      const response = await axios.post("http://localhost:3000/register/form-data/submit", values);
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("Phone", values.Phone);
+      formData.append("DateOfBirth", values.DateOfBirth);
+      formData.append("image", values.image); // Attach the file
+
+      // Send the form data with the image file
+      const response = await axios.post("http://localhost:3000/register/form-data/submit", formData, {
+        headers: { "Content-Type": "multipart/form-data" }, // Ensure file upload works
+      });
+
       alert(response.data.message);
     } catch (error) {
       setErrors({ submit: error.response?.data?.message || "Error registering user" });
@@ -48,7 +59,7 @@ const UserRegister = () => {
         <div className="col-md-6">
           <h2 className="mb-4">User Registration</h2>
           <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-            {({ setFieldValue, isSubmitting, values, errors }) => (
+            {({ setFieldValue, isSubmitting, errors }) => (
               <Form>
                 <div className="mb-3">
                   <label className="form-label">Name</label>
@@ -85,11 +96,13 @@ const UserRegister = () => {
                   <input
                     type="file"
                     className="form-control"
+                    accept="image/*"
+                    
+                    // This will show the epreview of the image inserted just now
                     onChange={(event) => {
                       const file = event.target.files[0];
                       if (file) {
-                        const fileName = file.name; // Get the file name (not the full path)
-                        setFieldValue("image", fileName); // Store file name
+                        setFieldValue("image", file); // Store the file object
                         setImagePreview(URL.createObjectURL(file)); // Display preview
                       }
                     }}

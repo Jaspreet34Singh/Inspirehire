@@ -1,12 +1,26 @@
 import express from "express";
+import multer from "multer"
 import { checkEmail, hashPassword, enterData } from "../modules/userModule.js";
 
 const router = express.Router();
 
-router.post("/submit", async (req, res) => {
-  const { name, email, password, image, DateOfBirth, Phone } = req.body;
+
+const storage = multer.diskStorage({
+  destination: "./uploads",
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+
+
+router.post("/submit", upload.single("image"), async (req, res) => {
+  const { name, email, password, DateOfBirth, Phone } = req.body;
+  const imagePath = `/uploads/${req.file.filename}`;
 
   try {
+    
     // Check if email exists
     const noDuplicateEmail = await checkEmail(email);
     console.log(noDuplicateEmail)
@@ -19,7 +33,7 @@ router.post("/submit", async (req, res) => {
     const hashedPassword = await hashPassword(password);
 
     // Insert user into database
-    await enterData(name, email, hashedPassword, image, DateOfBirth, Phone);
+    await enterData(name, email, hashedPassword, imagePath, DateOfBirth, Phone);
     
     res.status(201).json({ message: "User registered successfully!" });
   } 
