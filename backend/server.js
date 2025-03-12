@@ -22,7 +22,7 @@ import SecurityQuestion from "./modules/securityQuestions.model.js";
 import SecurityAnswer from "./modules/securtiyAnswer.js";
 
 // Import routes
-// import userRoutes from "./routes/userRegisterRoute.js";
+import userRoutes from "./routes/userRegisterRoute.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -100,7 +100,7 @@ app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
-// app.use("/register/form-data", userRoutes); 
+app.use("/register/form-data", userRoutes); 
 
 // Home route
 app.get('/', (req, res) => {

@@ -1,41 +1,78 @@
 import express from "express";
 import multer from "multer"
-import { checkEmail, hashPassword, enterData } from "../modules/userModule.js";
+import User from "../modules/userModule.js";
+import path from "path";
+
 
 const router = express.Router();
 
-
+// Storing the file with filename
 const storage = multer.diskStorage({
-  destination: "./uploads",
+  destination: "./uploads/profilePhotos",
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
   }
 });
 
-const upload = multer({ storage: storage });
+// File filter
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = /jpeg|jpg|png|gif/;
+  const extname = allowedFileTypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = allowedFileTypes.test(file.mimetype);
+  
+  if (extname && mimetype) {
+    return cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed!'), false);
+  }
+};
+
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max file size
+  fileFilter: fileFilter
+});
 
 
 router.post("/submit", upload.single("image"), async (req, res) => {
   const { name, email, password, DateOfBirth, Phone } = req.body;
-  const imagePath = `/uploads/${req.file.filename}`;
+  const imagePath = `/uploads/profilePhotos/${req.file.filename}`;
 
   try {
     
-    // Check if email exists
-    const noDuplicateEmail = await checkEmail(email);
-    console.log(noDuplicateEmail)
-    if (noDuplicateEmail) {
-        console.log("Email already exists")
-      return res.status(400).json({ message: "Email already in use" });
+    // Check if user already exists
+    const existingUser = await User.findOne({ where: { Email: email } });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already registered"
+      });
     }
 
     // Hash password
-    const hashedPassword = await hashPassword(password);
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    
 
     // Insert user into database
-    await enterData(name, email, hashedPassword, imagePath, DateOfBirth, Phone);
-    
-    res.status(201).json({ message: "User registered successfully!" });
+    const newUser = await User.create({
+      Role_ID: 1, 
+      Name: name,
+      Email: email,
+      workingID: null,
+      Password: hashedPassword,
+      Image: imagePath,
+      First_Login: true,
+      DateOfBirth: DateOfBirth || null,
+      Phone: Phone
+    });
+
+
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      userId: newUser.User_ID
+    })
   } 
   
   catch (error) {

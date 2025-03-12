@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Swal from "sweetalert2"
 
 const UserRegister = () => {
   const [imagePreview, setImagePreview] = useState(null); // For previewing the image
@@ -46,7 +47,13 @@ const UserRegister = () => {
         headers: { "Content-Type": "multipart/form-data" }, // Ensure file upload works
       });
 
-      alert(response.data.message);
+      Swal.fire({
+        title: "Success!",
+        text: `User registered successfully! Your User ID is ${response.data.userId}`,
+        icon: "success",
+        confirmButtonText: "OK"
+      });
+      
     } catch (error) {
       setErrors({ submit: error.response?.data?.message || "Error registering user" });
     }

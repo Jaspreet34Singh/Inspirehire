@@ -30,18 +30,18 @@ const sequelize = new Sequelize(
         // For setting initial AUTO_INCREMENT values in tables
         initialAutoIncrement: {
           role: 1,
-          user: 10000,
+          user: 10001,
           job_category: 1,
-          job_post: 50000,
-          application: 40000,
-          ai_screening: 70000,
-          notification: 60000,
-          education: 80000,
-          work_exp: 81000,
-          job_preference: 82000,
-          security_question: 96000,
-          security_ans: 95000,
-          report: 99000
+          job_post: 50001,
+          application: 40001,
+          ai_screening: 70001,
+          notification: 60001,
+          education: 80001,
+          work_exp: 81001,
+          job_preference: 82001,
+          security_question: 96001,
+          security_ans: 95001,
+          report: 99001
         }
     }
   );
