@@ -9,6 +9,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import HRDashboard from "./pages/HRDashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import JobPost from "./pages/JobPost";
+import JobListings from "./pages/JobListings";
+import JobDetails from "./pages/JobDetails";
 
 function App() {
   return (
@@ -36,6 +39,7 @@ function App() {
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
               <Nav.Link as={Link} to="/register">Register</Nav.Link>
+              <Nav.Link as={Link} to="/jobs">Jobs</Nav.Link>
               <LogoutButton />  
             </Nav>
           </Navbar.Collapse>
@@ -49,17 +53,25 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<UserRegister />} />
-
+          <Route path="/jobs" exact element={<JobListings />} />
+          <Route path="/jobs/:id" element={<JobDetails />} />
           {/* Protected Routes (Only accessible if logged in) */}
           <Route element={<PrivateRoute allowedRoles={[1]} />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
           </Route>
-          <Route element={<PrivateRoute allowedRoles={[2]} />}>
-            <Route path="/hr-dashboard" element={<HRDashboard />} />
-          </Route>
+          
           <Route element={<PrivateRoute allowedRoles={[3]} />}>
             <Route path="/applicant-dashboard" element={<ApplicantDashboard />} />
           </Route>
+          {/*HR only routes*/}
+          <Route element={<PrivateRoute allowedRoles={[2]} />}>
+            <Route path="/hr-dashboard" element={<HRDashboard />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={[2]} />}>
+          <Route path="/post-job" element={<JobPost />} />
+          </Route>
+          
+
         </Routes>
       </Container>
     </Router>

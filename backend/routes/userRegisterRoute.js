@@ -61,7 +61,7 @@ router.post("/submit", upload.single("image"), async (req, res) => {
 
     // Insert user into database
     const newUser = await User.create({
-      Role_ID: 3, 
+      Role_ID: 2, 
       Name: name.trim(),
       Email: email.trim(),
       workingID: null,

@@ -24,7 +24,7 @@ import SecurityAnswer from "./modules/securtiyAnswer.js";
 // Import routes
 import userRoutes from "./routes/userRegisterRoute.js";
 import authRoutes from "./routes/authRoutes.js";
-
+import jobRoutes from "./routes/jobRoutes.js";
 
 
 
@@ -85,7 +85,7 @@ SecurityQuestion.hasMany(SecurityAnswer, { foreignKey: 'Security_Question_ID' })
 SecurityAnswer.belongsTo(SecurityQuestion, { foreignKey: 'Security_Question_ID' });
 
 // Sync database with models
-sequelize.sync({ alter: true }) 
+sequelize.sync() 
   .then(() => console.log("Database synchronized with Sequelize models"))
   .catch(error => console.error("Database sync error:", error));
 
@@ -115,6 +115,9 @@ app.get('/', (req, res) => {
 
 // Auth route
 app.use("/auth", authRoutes);
+
+// Job route
+app.use("/jobs", jobRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
