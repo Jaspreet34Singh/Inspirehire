@@ -1,0 +1,71 @@
+/* === General Page Styling === */
+body {
+    background-color: white;
+  }
+  
+  /* === Top Bar === */
+  .top-bar {
+    background-color: #1E3A8A;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .top-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .top-left img {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .user-icon {
+    height: 30px;
+  }
+  
+  /* === Title Centered === */
+  .title-container {
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-top: 10px;
+    color: black;
+  }
+  
+  /* === Gradient Background Section === */
+  .gradient-box {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 30px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #1E3A8A, #9333EA);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  }
+  
+  /* === Option Box (Clickable Boxes) === */
+  .option-box {
+    background: white;
+    color: black;
+    padding: 20px;
+    margin: 15px;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+    min-width: 180px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .option-box:hover {
+    background: #E5E7EB;
+  }
+  

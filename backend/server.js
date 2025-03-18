@@ -23,6 +23,9 @@ import SecurityAnswer from "./modules/securtiyAnswer.js";
 
 // Import routes
 import userRoutes from "./routes/userRegisterRoute.js";
+import authRoutes from "./routes/authRoutes.js";
+
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -94,6 +97,8 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(cors());
 
 // Static files
@@ -102,10 +107,14 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routes
 app.use("/register/form-data", userRoutes); 
 
+
 // Home route
 app.get('/', (req, res) => {
   res.send('InspireHire API is running');
 });
+
+// Auth route
+app.use("/auth", authRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

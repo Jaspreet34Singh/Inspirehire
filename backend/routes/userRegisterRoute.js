@@ -1,12 +1,12 @@
 import express from "express";
-import multer from "multer"
-import User from "../modules/userModule.js";
+import multer from "multer";
 import path from "path";
-
+import bcrypt from "bcryptjs";
+import User from "../modules/userModule.js";
 
 const router = express.Router();
 
-// Storing the file with filename
+// Configure Multer Storage
 const storage = multer.diskStorage({
   destination: "./uploads/profilePhotos",
   filename: (req, file, cb) => {
@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   }
 });
 
-// File filter
+// File filter for image validation
 const fileFilter = (req, file, cb) => {
   const allowedFileTypes = /jpeg|jpg|png|gif/;
   const extname = allowedFileTypes.test(path.extname(file.originalname).toLowerCase());
@@ -23,24 +23,30 @@ const fileFilter = (req, file, cb) => {
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb(new Error('Only image files are allowed!'), false);
+    cb(new Error("Only image files (JPG, PNG, GIF) are allowed!"), false);
   }
 };
 
 const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max file size
+  limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB file size
   fileFilter: fileFilter
 });
 
-
+// ✅ Fix: Ensure request validation
 router.post("/submit", upload.single("image"), async (req, res) => {
-  const { name, email, password, DateOfBirth, Phone } = req.body;
-  const imagePath = `/uploads/profilePhotos/${req.file.filename}`;
-
   try {
-    
-    // Check if user already exists
+    console.log("Received Request Body:", req.body);  // ✅ Debugging
+
+    const { name, email, password, DateOfBirth, Phone } = req.body;
+    if (!name || !email || !password || !Phone) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    // ✅ Fix: Handle missing file (Avoid `req.file.filename` error)
+    const imagePath = req.file ? `/uploads/profilePhotos/${req.file.filename}` : "default.png";
+
+    // Check if the user already exists
     const existingUser = await User.findOne({ where: { Email: email } });
     if (existingUser) {
       return res.status(400).json({
@@ -52,33 +58,28 @@ router.post("/submit", upload.single("image"), async (req, res) => {
     // Hash password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    
 
     // Insert user into database
     const newUser = await User.create({
-      Role_ID: 1, 
-      Name: name,
-      Email: email,
+      Role_ID: 3, 
+      Name: name.trim(),
+      Email: email.trim(),
       workingID: null,
       Password: hashedPassword,
       Image: imagePath,
       First_Login: true,
       DateOfBirth: DateOfBirth || null,
-      Phone: Phone
+      Phone: Phone.trim()
     });
-
 
     res.status(201).json({
       success: true,
       message: "User registered successfully",
       userId: newUser.User_ID
-    })
-  } 
-  
-  catch (error) {
-    console.log("Error in route ")
-    console.error("Error:", error);
-    // res.status(500).json({ error: "Internal server error" });
+    });
+  } catch (error) {
+    console.error("Error in route:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

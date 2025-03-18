@@ -1,0 +1,42 @@
+/* General Styling */
+.dashboard-container {
+    margin-top: 50px;
+    padding: 30px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #1e3a8a, #9333ea);
+    text-align: center;
+    min-height: 300px;
+  }
+  
+  .dashboard-container h2 {
+    color: white;
+    font-weight: bold;
+  }
+  
+  /* Buttons */
+  .btn {
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+  }
+  
+  .btn-primary {
+    background-color: #1e3a8a;
+    border: none;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+  }
+  
+  .btn-warning {
+    background-color: #ffc107;
+    color: black;
+  }
+  
+  /* Hover Effects */
+  .btn:hover {
+    opacity: 0.9;
+  }
+  
