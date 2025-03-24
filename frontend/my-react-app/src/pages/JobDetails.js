@@ -11,6 +11,7 @@ const JobDetails = () => {
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
+        console.log(id)
         const response = await API.get(`/jobs/${id}`);
         setJob(response.data.job);
       } catch (error) {
@@ -45,7 +46,7 @@ const JobDetails = () => {
 
       <div className="p-4 bg-light rounded">
         {/* Job Title and Metadata */}
-        <h4 className="fw-bold">Job Title</h4>
+        <h4 className="fw-bold">Job Details</h4>
         <Row className="text-secondary">
           <Col md={4}><strong>Location</strong></Col>
           <Col md={4}><strong>Deadline</strong></Col>
@@ -57,19 +58,29 @@ const JobDetails = () => {
           <Col md={4}><strong>Posted On</strong></Col>
           <Col md={4}><strong>Category</strong></Col>
           <Col md={4}>${job.Salary}</Col>
-          <Col md={4}>{new Date(job.Posted_On).toDateString()}</Col>
-          <Col md={4}>{job.Category_ID}</Col>
+          <Col md={4}>{new Date(job.Posted_Date).toDateString()}</Col>
+          <Col md={4}>{job.JobCategory.Category_Name}</Col>
+          <Col md={4}><strong>Minimum Work Experience</strong></Col>
+          <Col md={4}><strong>Minimum Education Required</strong></Col>
+          <Col md={4}><strong></strong></Col>
+        
+          <Col md={4}>{job.Min_WorkExp}</Col>
+          <Col md={4}>{job.Min_EduReq} </Col>
         </Row>
 
-        {/* Apply Now Button */}
-        <div className="text-end mt-3">
-          <Button variant="primary">Apply Now</Button>
-        </div>
+       
 
         {/* Job Description */}
         <h4 className="fw-bold mt-4">Description</h4>
         <p className="text-secondary">{job.Job_Description}</p>
+
+
+       {/* Apply Now Button */}
+       <div className="text-start mt-3">
+          <Button variant="primary">Apply Now</Button>
+        </div>
       </div>
+      
     </Container>
   );
 };

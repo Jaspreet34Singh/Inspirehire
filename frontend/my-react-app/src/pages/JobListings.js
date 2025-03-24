@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import API from "../utils/axiosInstance";
 import { Container, Card, Button, Row, Col, Form, Collapse, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import "../styles/JobListing.css"
 
 
@@ -164,16 +165,18 @@ const JobListings = () => {
                     </p>
                   </Col>
                   <Col md={4} className="text-end">
-                    <Button 
-                      variant="primary" 
-                      style={{ 
-                        backgroundColor: "#7b61ff", 
-                        borderRadius: "25px", 
-                        padding: "10px 20px" 
-                      }}
-                    >
-                      View Job
-                    </Button>
+                    <Link to={`/jobs/${job.JOB_ID}`}>
+                      <Button 
+                        variant="primary" 
+                        style={{ 
+                          backgroundColor: "#7b61ff", 
+                          borderRadius: "25px", 
+                          padding: "10px 20px" 
+                        }}
+                      >
+                        View Job
+                      </Button>
+                    </Link>
                   </Col>
                 </Row>
               </Card.Body>

@@ -36,10 +36,21 @@ export const getAllJobs = async (req, res) => {
       }
 };
 
-// ✅ Get job by ID
+//  Get job by ID
 export const getJobById = async (req, res) => {
   try {
-    const job = await JobPost.findByPk(req.params.id);
+    const job = await JobPost.findByPk(req.params.id, 
+        {
+            include: [
+                { 
+                  model: JobCategory,  
+                  as: JobCategory,
+                  attributes: ["Category_Name"]
+                }
+              ]
+        }
+    );
+    console.log(req.params.id)
     if (!job) return res.status(404).json({ success: false, message: "Job not found" });
 
     res.json({ success: true, job });
@@ -48,7 +59,7 @@ export const getJobById = async (req, res) => {
   }
 };
 
-// ✅ Create a new Job Post (Only for HR - Role_ID: 2)
+// Create a new Job Post (Only for HR - Role_ID: 2)
 export const createJobPost = async (req, res) => {
   try {
     console.log("🔹 Incoming Job Post Request:", req.body);
