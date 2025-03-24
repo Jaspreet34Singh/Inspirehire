@@ -82,7 +82,8 @@ const JobPost = sequelize.define('JobPost', {
       foreignKey: 'USER_ID'
     });
     JobPost.belongsTo(models.JobCategory, {
-      foreignKey: 'Category_ID'
+      foreignKey: 'Category_ID',
+      as: "JobCategory"
     });
     JobPost.hasMany(models.Application, {
       foreignKey: 'Job_ID'

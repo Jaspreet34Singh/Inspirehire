@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import UserRegister from "./pages/UserRegister";
 import Home from "./pages/Home";
+import "./App.css"
 import Login from "./pages/Login";
 import ApplicantDashboard from "./pages/ApplicantDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -17,7 +18,7 @@ function App() {
   return (
     <Router>
     
-      <Navbar expand="lg" bg="dark" variant="dark">
+      <Navbar className = "navbarCust" expand="lg" variant="dark">
         <Container>
         <Navbar.Brand as={Link} to="/">
             <img 
@@ -39,7 +40,7 @@ function App() {
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
               <Nav.Link as={Link} to="/register">Register</Nav.Link>
-              <Nav.Link as={Link} to="/jobs">Jobs</Nav.Link>
+
               <LogoutButton />  
             </Nav>
           </Navbar.Collapse>
@@ -50,11 +51,10 @@ function App() {
       <Container className="mt-4">
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<JobListings />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<UserRegister />} />
-          <Route path="/jobs" exact element={<JobListings />} />
-          <Route path="/jobs/:id" element={<JobDetails />} />
+          <Route path="/jobs/:id" element={<JobDetails />}/>
           {/* Protected Routes (Only accessible if logged in) */}
           <Route element={<PrivateRoute allowedRoles={[1]} />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />

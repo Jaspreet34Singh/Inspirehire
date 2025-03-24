@@ -1,0 +1,15 @@
+.img-Filter{
+    width:20px;
+}
+
+
+.CustomBtn{
+    padding: 0px;
+    margin-right: 5px;
+}
+
+.outerBoxSearchBar{
+    padding: 50px;
+    background: linear-gradient(to right, #b767d3, #1f5099);
+    margin-bottom: 30px;
+}
