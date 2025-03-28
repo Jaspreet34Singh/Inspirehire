@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Container, Form, Button, Alert } from "react-bootstrap";
+import { Container, Form, Button, Alert, Row, Col } from "react-bootstrap";
 
 const JobPost = () => {
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ const JobPost = () => {
     category: "",
     jobType: "",
     location: "",
-    minEduReq: "",
-    minWorkExp: "",
+    MinEducationLevel: "",
+    MinFieldRelatedExp: "",
     salary: "",
     description: "",
     deadline: "",
@@ -40,7 +40,7 @@ const JobPost = () => {
   // Validate Form
   const validateForm = () => {
     if (!jobData.title || !jobData.category || !jobData.jobType || !jobData.location || 
-        !jobData.minEduReq || !jobData.minWorkExp || !jobData.salary || !jobData.description || !jobData.deadline) {
+        !jobData.MinEducationLevel || !jobData.MinFieldRelatedExp || !jobData.salary || !jobData.description || !jobData.deadline) {
       return "All fields are required!";
     }
 
@@ -127,14 +127,22 @@ const JobPost = () => {
           <Form.Control type="text" name="location" required onChange={handleChange} />
         </Form.Group>
 
+
         <Form.Group className="mb-3">
-          <Form.Label>Minimum Education Requirement</Form.Label>
-          <Form.Control type="text" name="minEduReq" required onChange={handleChange} />
+          <Form.Label>Minimum Education Required</Form.Label>
+          <Form.Select name="MinEducationLevel" required onChange={handleChange}>
+          <option value="">Select Education Level</option>
+            <option value="Masters">Masters</option>
+            <option value="Bachelors">Bachelors</option>
+            <option value="Diploma">Diploma</option>
+            <option value="Certificate">Certificate</option>
+          </Form.Select>
         </Form.Group>
+
 
         <Form.Group className="mb-3">
           <Form.Label>Minimum Work Experience</Form.Label>
-          <Form.Control type="text" name="minWorkExp" required onChange={handleChange} />
+          <Form.Control type="text" name="MinFieldRelatedExp" required onChange={handleChange} />
         </Form.Group>
 
         <Form.Group className="mb-3">

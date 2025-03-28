@@ -25,6 +25,8 @@ import SecurityAnswer from "./modules/securtiyAnswer.js";
 import userRoutes from "./routes/userRegisterRoute.js";
 import authRoutes from "./routes/authRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
+import applyRoutes from "./routes/ApplicationRoute.js"
+import screeningRouter from "./routes/ScreeningRoutes.js"
 
 
 
@@ -44,9 +46,20 @@ JobPost.belongsTo(JobCategory, { foreignKey: 'Category_ID' });
 JobCategory.hasMany(JobPreference, { foreignKey: 'Category_ID' });
 JobPreference.belongsTo(JobCategory, { foreignKey: 'Category_ID' });
 
-// User associations
-User.hasMany(JobPost, { foreignKey: 'USER_ID' });
-JobPost.belongsTo(User, { foreignKey: 'USER_ID' });
+User.hasMany(JobPost, { 
+  foreignKey: 'User_ID',
+  as: 'JobPosts', // Optional but recommended
+  onDelete: 'CASCADE', // Optional: handles deletion behavior
+  onUpdate: 'CASCADE'  // Optional: handles update behavior
+});
+
+JobPost.belongsTo(User, { 
+  foreignKey: 'User_ID',
+  as: 'User', // Optional but recommended
+  onDelete: 'CASCADE', // Optional: handles deletion behavior
+  onUpdate: 'CASCADE'  // Optional: handles update behavior
+});
+
 
 User.hasMany(WorkExp, { foreignKey: 'USER_ID' });
 WorkExp.belongsTo(User, { foreignKey: 'USER_ID' });
@@ -118,6 +131,10 @@ app.use("/auth", authRoutes);
 
 // Job route
 app.use("/jobs", jobRoutes);
+
+app.use("/apply", applyRoutes)
+
+app.use("/application", screeningRouter)
 
 // Error handling middleware
 app.use((err, req, res, next) => {

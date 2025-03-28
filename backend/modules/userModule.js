@@ -104,8 +104,11 @@ import sequelize from "../config/database.js"
     User.hasMany(models.JobPreference, {
       foreignKey: 'USER_ID'
     });
-    User.hasMany(models.JobPost, {
-      foreignKey: 'USER_ID'
+    User.hasMany(JobPost, { 
+      foreignKey: 'USER_ID',
+      as: 'JobPosts', // Optional but recommended
+      onDelete: 'CASCADE', // Optional: handles deletion behavior
+      onUpdate: 'CASCADE'  // Optional: handles update behavior
     });
     User.hasMany(models.Application, {
       foreignKey: 'User_ID'

@@ -13,6 +13,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import JobPost from "./pages/JobPost";
 import JobListings from "./pages/JobListings";
 import JobDetails from "./pages/JobDetails";
+import JobApplicationForm from "./pages/ApplicationPage.js"
 
 function App() {
   return (
@@ -40,7 +41,6 @@ function App() {
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
               <Nav.Link as={Link} to="/register">Register</Nav.Link>
-
               <LogoutButton />  
             </Nav>
           </Navbar.Collapse>
@@ -55,6 +55,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<UserRegister />} />
           <Route path="/jobs/:id" element={<JobDetails />}/>
+
           {/* Protected Routes (Only accessible if logged in) */}
           <Route element={<PrivateRoute allowedRoles={[1]} />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
@@ -62,6 +63,7 @@ function App() {
           
           <Route element={<PrivateRoute allowedRoles={[3]} />}>
             <Route path="/applicant-dashboard" element={<ApplicantDashboard />} />
+            <Route path="/apply-job/:job_id" element={< JobApplicationForm />} />
           </Route>
           {/*HR only routes*/}
           <Route element={<PrivateRoute allowedRoles={[2]} />}>
@@ -70,6 +72,7 @@ function App() {
           <Route element={<PrivateRoute allowedRoles={[2]} />}>
           <Route path="/post-job" element={<JobPost />} />
           </Route>
+
           
 
         </Routes>
@@ -82,9 +85,10 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");   // Remove JWT Token
+    localStorage.removeItem("token");    // Remove JWT Token
     localStorage.removeItem("userRole"); // Remove Role
-    navigate("/login");                 // Redirect to Login
+    localStorage.removeItem("User_ID");  // Remove user id
+    navigate("/login");                  // Redirect to Login
   };
 
   return (

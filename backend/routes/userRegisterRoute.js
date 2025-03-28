@@ -36,7 +36,7 @@ const upload = multer({
 // ✅ Fix: Ensure request validation
 router.post("/submit", upload.single("image"), async (req, res) => {
   try {
-    console.log("Received Request Body:", req.body);  // ✅ Debugging
+    console.log("Received Request Body:", req.body);  // 
 
     const { name, email, password, DateOfBirth, Phone } = req.body;
     if (!name || !email || !password || !Phone) {
@@ -61,7 +61,7 @@ router.post("/submit", upload.single("image"), async (req, res) => {
 
     // Insert user into database
     const newUser = await User.create({
-      Role_ID: 2, 
+      Role_ID: 3, 
       Name: name.trim(),
       Email: email.trim(),
       workingID: null,

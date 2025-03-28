@@ -48,16 +48,19 @@ const JobPost = sequelize.define('JobPost', {
         isEmail: true
       }
     },
-    Min_EduReq: {
-      type: DataTypes.STRING(100),
-      allowNull: false
+    MinFieldRelatedExp: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      comment: 'Minimum field-related experience required'
+    },
+    MinEducationLevel: {
+      type: DataTypes.ENUM('Masters', 'Bachelors', 'Diploma', 'Certificate'),
+      allowNull: false,
+      defaultValue: 'Certificate',
+      comment: 'Minimum education level required'
     },
     Job_Description: {
       type: DataTypes.TEXT,
-      allowNull: false
-    },
-    Min_WorkExp: {
-      type: DataTypes.STRING(100),
       allowNull: false
     },
     Salary: {
@@ -78,8 +81,11 @@ const JobPost = sequelize.define('JobPost', {
   });
 
   JobPost.associate = (models) => {
-    JobPost.belongsTo(models.User, {
-      foreignKey: 'USER_ID'
+    JobPost.belongsTo(User, { 
+      foreignKey: 'USEER_ID',
+      as: 'User', // Optional but recommended
+      onDelete: 'CASCADE', // Optional: handles deletion behavior
+      onUpdate: 'CASCADE'  // Optional: handles update behavior
     });
     JobPost.belongsTo(models.JobCategory, {
       foreignKey: 'Category_ID',

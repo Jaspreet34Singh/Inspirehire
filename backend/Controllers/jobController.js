@@ -1,7 +1,7 @@
 import JobPost from "../modules/job.model.js";
 import JobCategory from "../modules/jobCategory.model.js";
 
-// ✅ Get all job categories
+//  Get all job categories
 export const getJobCategories = async (req, res) => {
   try {
     console.log("Fetching job categories...");
@@ -46,11 +46,10 @@ export const getJobById = async (req, res) => {
                   model: JobCategory,  
                   as: JobCategory,
                   attributes: ["Category_Name"]
-                }
+                }       
               ]
         }
     );
-    console.log(req.params.id)
     if (!job) return res.status(404).json({ success: false, message: "Job not found" });
 
     res.json({ success: true, job });
@@ -69,14 +68,14 @@ export const createJobPost = async (req, res) => {
       category,
       jobType,
       location,
-      minEduReq,
-      minWorkExp,
+      MinEducationLevel,
+      MinFieldRelatedExp,
       salary,
       description,
       deadline,
     } = req.body;
 
-    if (!title || !category || !jobType || !location || !minEduReq || !minWorkExp || !salary || !description || !deadline) {
+    if (!title || !category || !jobType || !location || !MinFieldRelatedExp || !MinEducationLevel || !salary || !description || !deadline) {
       return res.status(400).json({ success: false, message: "All fields are required!" });
     }
 
@@ -96,8 +95,8 @@ export const createJobPost = async (req, res) => {
       Job_Type: jobType,
       Job_Location: location,
       Job_Contact_Email: hrEmail,
-      Min_EduReq: minEduReq,
-      Min_WorkExp: minWorkExp,
+      Min_EduReq: MinEducationLevel,
+      Min_WorkExp: MinFieldRelatedExp,
       Salary: salary,
       Job_Description: description,
       Job_Deadline: deadline,

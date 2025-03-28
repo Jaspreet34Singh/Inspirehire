@@ -5,6 +5,7 @@ const PrivateRoute = ({ allowedRoles }) => {
   // Get user authentication status & role from localStorage
   const token = localStorage.getItem("token");
   const userRole = localStorage.getItem("userRole");
+  const id = localStorage.getItem("ID");
 
   // If no token, redirect to login
   if (!token) {

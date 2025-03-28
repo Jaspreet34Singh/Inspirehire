@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import API from "../utils/axiosInstance";
 import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 
@@ -11,7 +11,6 @@ const JobDetails = () => {
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
-        console.log(id)
         const response = await API.get(`/jobs/${id}`);
         setJob(response.data.job);
       } catch (error) {
@@ -64,8 +63,8 @@ const JobDetails = () => {
           <Col md={4}><strong>Minimum Education Required</strong></Col>
           <Col md={4}><strong></strong></Col>
         
-          <Col md={4}>{job.Min_WorkExp}</Col>
-          <Col md={4}>{job.Min_EduReq} </Col>
+          <Col md={4}>{job.MinFieldRelatedExp}</Col>
+          <Col md={4}>{job.MinEducationLevel} </Col>
         </Row>
 
        
@@ -77,7 +76,9 @@ const JobDetails = () => {
 
        {/* Apply Now Button */}
        <div className="text-start mt-3">
-          <Button variant="primary">Apply Now</Button>
+          <Link to={`/apply-job/${job.JOB_ID}`}>
+            <Button variant="primary">Apply Now</Button>
+          </Link>
         </div>
       </div>
       
