@@ -28,6 +28,8 @@ import authRoutes from "./routes/authRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import applyRoutes from "./routes/ApplicationRoute.js"
 import screeningRouter from "./routes/ScreeningRoutes.js"
+import preferrenceRouter from "./routes/preferrenceRouter.js"
+import { workerData } from "worker_threads";
 
 
 
@@ -100,6 +102,8 @@ SecurityAnswer.belongsTo(SecurityQuestion, { foreignKey: 'Security_Question_ID' 
 
 // Sync database with models
 RejectionEmailJob.sync();
+WorkExp.sync({alter: true})
+
 
 sequelize.sync() 
   .then(() => console.log("Database synchronized with Sequelize models"))
@@ -138,6 +142,8 @@ app.use("/jobs", jobRoutes);
 app.use("/apply", applyRoutes)
 
 app.use("/application", screeningRouter)
+
+app.use("/preferrence", preferrenceRouter)
 
 // Error handling middleware
 app.use((err, req, res, next) => {

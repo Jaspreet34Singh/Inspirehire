@@ -1,5 +1,7 @@
 import JobPost from "../modules/job.model.js";
 import JobCategory from "../modules/jobCategory.model.js";
+import { Op } from "sequelize";
+
 
 //  Get all job categories
 export const getJobCategories = async (req, res) => {
@@ -20,20 +22,24 @@ export const getJobCategories = async (req, res) => {
 
 //  Get all jobs
 export const getAllJobs = async (req, res) => {
-    try {
-        const jobs = await JobPost.findAll({
+  try {
+      const jobs = await JobPost.findAll({
+          where: {
+              Job_Deadline: { [Op.gt]: new Date() } // Only fetch jobs where deadline is in the future
+          },
           include: [
-            { 
-              model: JobCategory,  
-              as: JobCategory,
-              attributes: ["Category_Name"]
-            }
+              { 
+                  model: JobCategory,  
+                  as: "JobCategory",
+                  attributes: ["Category_Name"]
+              }
           ]
-        });
-        res.json({ success: true, jobs });
-      } catch (error) {
-        res.status(500).json({ success: false, message: "Error fetching jobs", error: error.message });
-      }
+      });
+
+      res.json({ success: true, jobs });
+  } catch (error) {
+      res.status(500).json({ success: false, message: "Error fetching jobs", error: error.message });
+  }
 };
 
 //  Get job by ID

@@ -43,7 +43,7 @@ router.post("/submit", upload.single("image"), async (req, res) => {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
-    // ✅ Fix: Handle missing file (Avoid `req.file.filename` error)
+    //  Fix: Handle missing file (Avoid `req.file.filename` error)
     const imagePath = req.file ? `/uploads/profilePhotos/${req.file.filename}` : "default.png";
 
     // Check if the user already exists

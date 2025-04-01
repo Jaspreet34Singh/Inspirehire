@@ -4,10 +4,12 @@ import * as Yup from "yup";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Swal from "sweetalert2"
+import { useNavigate } from "react-router-dom";
 
 const UserRegister = () => {
   const [imagePreview, setImagePreview] = useState(null); // For previewing the image
-
+  
+  const navigate = useNavigate();
   const initialValues = {
     name: "",
     email: "",
@@ -47,11 +49,30 @@ const UserRegister = () => {
         headers: { "Content-Type": "multipart/form-data" }, // Ensure file upload works
       });
 
+      // Once the user is registered the previous token will be removed
+      localStorage.removeItem("token");    // Remove JWT Token
+      localStorage.removeItem("userRole"); // Remove Role
+      localStorage.removeItem("User_ID"); 
+
+      const response2 = await axios.post("http://localhost:3000/auth/login", {
+        email: values.email,
+        password: values.password,
+      })
+
+      // Store token in localStorage
+      localStorage.setItem("token", response2.data.token);
+      localStorage.setItem("userRole", response2.data.user.role);
+      localStorage.setItem("User_ID", response2.data.user.id);
+
       Swal.fire({
         title: "Success!",
         text: `User registered successfully! Your User ID is ${response.data.userId}`,
         icon: "success",
         confirmButtonText: "OK"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/applicantPreferrence"); 
+        }
       });
       
     } catch (error) {
@@ -64,7 +85,7 @@ const UserRegister = () => {
     <div className="container md-4">
       <div className="row justify-content-center">
         <div className="col-md-6">
-          <h2 className="mb-4">User Registration</h2>
+        <h1 className="fw-bold text-black">User Registration</h1>
           <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
             {({ setFieldValue, isSubmitting, errors }) => (
               <Form>

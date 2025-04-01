@@ -14,6 +14,7 @@ import JobPost from "./pages/JobPost";
 import JobListings from "./pages/JobListings";
 import JobDetails from "./pages/JobDetails";
 import JobApplicationForm from "./pages/ApplicationPage.js"
+import ApplicantPreferences from "./pages/ApplicantPreferrencePage.js"
 
 function App() {
   return (
@@ -38,7 +39,8 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/Home">Home</Nav.Link>
+              <Nav.Link as={Link} to="/">Jobs</Nav.Link>
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
               <Nav.Link as={Link} to="/register">Register</Nav.Link>
               <LogoutButton />  
@@ -51,7 +53,9 @@ function App() {
       <Container className="mt-4">
         <Routes>
           {/* Public Routes */}
+          
           <Route path="/" element={<JobListings />} />
+          <Route path="/Home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<UserRegister />} />
           <Route path="/jobs/:id" element={<JobDetails />}/>
@@ -64,6 +68,8 @@ function App() {
           <Route element={<PrivateRoute allowedRoles={[3]} />}>
             <Route path="/applicant-dashboard" element={<ApplicantDashboard />} />
             <Route path="/apply-job/:job_id" element={< JobApplicationForm />} />
+            <Route path="/applicantPreferrence" element={< ApplicantPreferences />} />
+
           </Route>
           {/*HR only routes*/}
           <Route element={<PrivateRoute allowedRoles={[2]} />}>

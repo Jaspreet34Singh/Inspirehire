@@ -31,16 +31,22 @@ const JobPreference = sequelize.define('JobPreference', {
     },
     JobType: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: true
     },
     JobLocation: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: true
     }
   }, {
     tableName: 'job_preference',
     timestamps: false
-  });
+  },{
+    indexes: [
+      {
+          unique: true,
+          fields: ['USER_ID', 'Category_ID'] // Unique constraint on USER_ID + Category_ID
+      }
+  ]});
 
   JobPreference.associate = (models) => {
     JobPreference.belongsTo(models.User, {
