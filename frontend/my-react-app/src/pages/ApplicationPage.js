@@ -3,8 +3,11 @@ import { useParams } from "react-router-dom";
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import API from "../utils/axiosInstance.js"
 import Swal from "sweetalert2"
+import { Navigate } from "react-router-dom";
+
 
 const JobApplicationForm = () => {
+    const navigate = Navigate();
     const user_Id = localStorage.getItem('User_ID'); // Fetch user ID from local storage
     const { job_id } = useParams();
 
@@ -175,7 +178,11 @@ const JobApplicationForm = () => {
                 text: `Application Successfully submitted!`,
                 icon: "success",
                 confirmButtonText: "OK"
-            });
+            }.then(() => {
+                
+                  navigate("/"); 
+                
+              }))
         } catch (err) {
             console.error("Application submission error:", err);
             
@@ -190,7 +197,7 @@ const JobApplicationForm = () => {
 
     return (
         <Container className="mt-5">
-            <h2 className="mb-4">Job Application</h2>
+            <h1 className="fw-bold text-primary">Job Application</h1>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col md={6}>

@@ -16,7 +16,7 @@ const sequelize = new Sequelize(
     {
       host: process.env.HOST,    // Database Host
       dialect: "mysql",          // Database Type
-      logging: true,            // Set true if you want SQL logs
+      logging: false,            
       pool: {
         max: 5, 
         min: 0, 

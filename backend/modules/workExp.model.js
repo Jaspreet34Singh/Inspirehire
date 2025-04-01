@@ -22,6 +22,10 @@ const WorkExp = sequelize.define('WorkExp', {
         key: 'User_ID'
       }
     },
+    Job_Title: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
     CompanyName: {
       type: DataTypes.STRING(100),
       allowNull: false
@@ -31,10 +35,11 @@ const WorkExp = sequelize.define('WorkExp', {
       allowNull: false
     },
     EndDate: {
-      type: DataTypes.DATEONLY
+      type: DataTypes.DATEONLY,
+      allowNull: true
     },
     JobDescription: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(1000),
       allowNull: false
     }
   }, {
