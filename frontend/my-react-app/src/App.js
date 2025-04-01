@@ -14,6 +14,12 @@ import JobPost from "./pages/JobPost";
 import JobListings from "./pages/JobListings";
 import JobDetails from "./pages/JobDetails";
 import JobApplicationForm from "./pages/ApplicationPage.js"
+import ManageJobs from "./pages/ManageJobs";
+import EditJob from "./pages/EditJob.js";
+import ManageCategories from "./pages/ManageCategories";
+import DeleteJob from "./pages/DeleteJob.js";
+import CreateHR from "./pages/CreateHR.js";
+import ChangePassword from "./pages/ChangePassword.js";
 
 function App() {
   return (
@@ -55,10 +61,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<UserRegister />} />
           <Route path="/jobs/:id" element={<JobDetails />}/>
+          <Route path="/change-password" element={<ChangePassword />} />
 
           {/* Protected Routes (Only accessible if logged in) */}
           <Route element={<PrivateRoute allowedRoles={[1]} />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/manage-categories" element={<ManageCategories />} />
+            <Route path="/delete-job" element={<DeleteJob />} />
+            <Route path="/create-hr" element={<CreateHR />} />
           </Route>
           
           <Route element={<PrivateRoute allowedRoles={[3]} />}>
@@ -72,6 +82,8 @@ function App() {
           <Route element={<PrivateRoute allowedRoles={[2]} />}>
           <Route path="/post-job" element={<JobPost />} />
           </Route>
+          <Route path="/manage-jobs" element={<ManageJobs />} />
+          <Route path="/edit-job/:id" element={<EditJob />} />
 
           
 

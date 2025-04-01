@@ -4,21 +4,25 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Middleware to Authenticate User
-export const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1]; // Extract token from Bearer Token
 
-  if (!token) {
-    return res.status(401).json({ success: false, message: "Access denied. No token provided." });
+export const authenticate = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ success: false, message: "Unauthorized - No Token" });
   }
+
+  const token = authHeader.split(" ")[1];
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Attach user info to request object
+    req.user = decoded; // should include id, email, role
     next();
   } catch (error) {
-    res.status(403).json({ success: false, message: "Invalid or expired token." });
+    return res.status(401).json({ success: false, message: "Invalid Token" });
   }
 };
+
 
 // Middleware to Authorize Specific Roles
 export const authorize = (allowedRoles) => {

@@ -8,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+
  // Redirect already logged-in users
   useEffect(() => {
     const role = localStorage.getItem("userRole");
@@ -36,6 +37,14 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userRole", response.data.user.role);
       localStorage.setItem("User_ID", response.data.user.id);
+      console.log("Login response:", response.data);
+
+      // Check if it's first login
+      if (response.data.user.First_Login) {
+      localStorage.setItem("userId", response.data.user.User_ID);  // Store ID for change-password
+      navigate("/change-password");
+     return;  // Prevent going to dashboard
+    }
 
       // Redirect based on role
       if (response.data.user.role === 1) {

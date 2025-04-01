@@ -39,19 +39,32 @@ const JobPost = () => {
 
   // Validate Form
   const validateForm = () => {
-    if (!jobData.title || !jobData.category || !jobData.jobType || !jobData.location || 
-        !jobData.MinEducationLevel || !jobData.MinFieldRelatedExp || !jobData.salary || !jobData.description || !jobData.deadline) {
+    if (
+      !jobData.title ||
+      !jobData.category ||
+      !jobData.jobType ||
+      !jobData.location ||
+      !jobData.MinEducationLevel ||
+      !jobData.MinFieldRelatedExp ||
+      !jobData.salary ||
+      !jobData.description ||
+      !jobData.deadline
+    ) {
       return "All fields are required!";
     }
-
+  
+    if (isNaN(jobData.MinFieldRelatedExp) || Number(jobData.MinFieldRelatedExp) < 0) {
+      return "Work experience must be a valid non-negative number!";
+    }
+  
     if (isNaN(jobData.salary) || jobData.salary <= 0) {
       return "Salary must be a positive number!";
     }
-
+  
     if (new Date(jobData.deadline) <= new Date()) {
       return "Deadline must be a future date!";
     }
-
+  
     return null; // No errors
   };
 
@@ -141,8 +154,8 @@ const JobPost = () => {
 
 
         <Form.Group className="mb-3">
-          <Form.Label>Minimum Work Experience</Form.Label>
-          <Form.Control type="text" name="MinFieldRelatedExp" required onChange={handleChange} />
+          <Form.Label>Minimum Work Experience(in years)</Form.Label>
+          <Form.Control type="number" name="MinFieldRelatedExp" required onChange={handleChange} />
         </Form.Group>
 
         <Form.Group className="mb-3">

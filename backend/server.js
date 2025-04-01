@@ -28,7 +28,7 @@ import authRoutes from "./routes/authRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import applyRoutes from "./routes/ApplicationRoute.js"
 import screeningRouter from "./routes/ScreeningRoutes.js"
-
+import adminRoutes from "./routes/adminRoutes.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -138,6 +138,9 @@ app.use("/jobs", jobRoutes);
 app.use("/apply", applyRoutes)
 
 app.use("/application", screeningRouter)
+
+//  admin route
+app.use("/admin", adminRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
