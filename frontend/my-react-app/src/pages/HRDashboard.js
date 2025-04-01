@@ -25,6 +25,11 @@ const HRDashboard = () => {
             Modify Account
           </Button>
         </Col>
+        <Col md={4} className="mb-3">
+          <Button variant="info" className="w-100" href="/view-applications">
+            View Applications
+          </Button>
+        </Col>
       </Row>
     </Container>
   );

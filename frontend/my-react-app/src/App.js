@@ -22,6 +22,8 @@ import CreateHR from "./pages/CreateHR.js";
 import ChangePassword from "./pages/ChangePassword.js";
 import ApplicantPreferences from "./pages/ApplicantPreferrencePage.js"
 import ApplicantProfile from "./pages/ApplicantProfile.js";
+import ViewApplications from "./pages/ViewApplications";
+
 
 function App() {
   return (
@@ -92,6 +94,7 @@ function App() {
           </Route>
           <Route path="/manage-jobs" element={<ManageJobs />} />
           <Route path="/edit-job/:id" element={<EditJob />} />
+          <Route path="/view-applications" element={<ViewApplications />} />
 
           
 

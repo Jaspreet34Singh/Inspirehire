@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 const PrivateRoute = ({ allowedRoles }) => {
   // Get user authentication status & role from localStorage
   const token = localStorage.getItem("token");
-  const userRole = localStorage.getItem("userRole");
+  const userRole = parseInt(localStorage.getItem("userRole"), 10);
   const id = localStorage.getItem("ID");
 
   // If no token, redirect to login
@@ -17,7 +17,7 @@ const PrivateRoute = ({ allowedRoles }) => {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return allowedRoles.includes(userRole) ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default PrivateRoute;

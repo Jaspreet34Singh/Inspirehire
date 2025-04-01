@@ -32,7 +32,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import preferrenceRouter from "./routes/preferrenceRouter.js"
 import { workerData } from "worker_threads";
 import ApplicantProfileRoute from "./routes/ApplicantProfileRoute.js";
-
+import viewApplicationRoutes from "./routes/viewApplicationRoutes.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -144,6 +144,8 @@ app.use("/jobs", jobRoutes);
 app.use("/apply", applyRoutes)
 
 app.use("/application", screeningRouter)
+
+app.use("/view-applications", viewApplicationRoutes);
 
 //  admin route
 app.use("/admin", adminRoutes);

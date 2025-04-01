@@ -2,6 +2,7 @@ import JobPost from "../modules/job.model.js";
 import JobCategory from "../modules/jobCategory.model.js";
 import { Op } from "sequelize";
 import sequelize from "../config/database.js";
+import Application from "../modules/application.model.js";
 
 // POST /jobs/categories
 export const createCategory = async (req, res) => {
@@ -109,6 +110,7 @@ export const deleteCategory = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to delete category", error: error.message });
   }
 };
+
 
 
 
@@ -289,3 +291,4 @@ export const getHRJobs = async (req, res) => {
     });
   }
 };
+

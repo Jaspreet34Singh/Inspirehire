@@ -50,4 +50,5 @@ router.post(
     postApplicationData
 );
 
+
 export default router;
