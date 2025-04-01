@@ -69,17 +69,17 @@ const ApplicantDashboard = () => {
               <div className="icon-wrapper bg-warning bg-opacity-10 rounded-circle p-4 mb-3 align-self-start">
               <FontAwesomeIcon icon={faUserPen} />
               </div>
-              <Card.Title className="fs-4 fw-bold">Career Profile</Card.Title>
+              <Card.Title className="fs-4 fw-bold">My Profile</Card.Title>
               <Card.Text className="text-muted mb-4">
-                Update your resume, skills, and preferences to attract better matches.
+               View and Update your information, skills, and preferences to attract better matches.
               </Card.Text>
               <Button 
                 as={Link} 
-                to="/edit-profile" 
+                to="/applicant-profile" 
                 variant="outline-warning" 
                 className="mt-auto w-100 py-2 fw-semibold"
               >
-                Edit Profile
+                View Profile
               </Button>
             </Card.Body>
           </Card>

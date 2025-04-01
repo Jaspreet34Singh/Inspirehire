@@ -15,6 +15,7 @@ import JobListings from "./pages/JobListings";
 import JobDetails from "./pages/JobDetails";
 import JobApplicationForm from "./pages/ApplicationPage.js"
 import ApplicantPreferences from "./pages/ApplicantPreferrencePage.js"
+import ApplicantProfile from "./pages/ApplicantProfile.js";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
           
           <Route element={<PrivateRoute allowedRoles={[3]} />}>
             <Route path="/applicant-dashboard" element={<ApplicantDashboard />} />
+            <Route path="/applicant-profile" element={<ApplicantProfile />} />
             <Route path="/apply-job/:job_id" element={< JobApplicationForm />} />
             <Route path="/applicantPreferrence" element={< ApplicantPreferences />} />
 

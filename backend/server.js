@@ -30,6 +30,7 @@ import applyRoutes from "./routes/ApplicationRoute.js"
 import screeningRouter from "./routes/ScreeningRoutes.js"
 import preferrenceRouter from "./routes/preferrenceRouter.js"
 import { workerData } from "worker_threads";
+import ApplicantProfileRoute from "./routes/ApplicantProfileRoute.js";
 
 
 
@@ -144,6 +145,8 @@ app.use("/apply", applyRoutes)
 app.use("/application", screeningRouter)
 
 app.use("/preferrence", preferrenceRouter)
+
+app.use("/applicantProfile", ApplicantProfileRoute)
 
 // Error handling middleware
 app.use((err, req, res, next) => {

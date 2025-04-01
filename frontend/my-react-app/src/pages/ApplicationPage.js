@@ -5,9 +5,9 @@ import API from "../utils/axiosInstance.js"
 import Swal from "sweetalert2"
 import { Navigate } from "react-router-dom";
 
-const navigate = Navigate();
 
 const JobApplicationForm = () => {
+    const navigate = Navigate();
     const user_Id = localStorage.getItem('User_ID'); // Fetch user ID from local storage
     const { job_id } = useParams();
 
