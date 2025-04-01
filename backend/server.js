@@ -20,6 +20,7 @@ import Notification from "./modules/notification.model.js";
 import Report from "./modules/report.model.js";
 import SecurityQuestion from "./modules/securityQuestions.model.js";
 import SecurityAnswer from "./modules/securtiyAnswer.js";
+import RejectionEmailJob from "./modules/RejectionEmailJob.model.js";
 
 // Import routes
 import userRoutes from "./routes/userRegisterRoute.js";
@@ -98,6 +99,8 @@ SecurityQuestion.hasMany(SecurityAnswer, { foreignKey: 'Security_Question_ID' })
 SecurityAnswer.belongsTo(SecurityQuestion, { foreignKey: 'Security_Question_ID' });
 
 // Sync database with models
+RejectionEmailJob.sync();
+
 sequelize.sync() 
   .then(() => console.log("Database synchronized with Sequelize models"))
   .catch(error => console.error("Database sync error:", error));
@@ -150,5 +153,6 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`InspireHire server running on port ${port}`);
 });
+
 
 export default app;

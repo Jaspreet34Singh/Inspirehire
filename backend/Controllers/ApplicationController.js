@@ -1,8 +1,10 @@
 import User from '../modules/userModule.js';
 import Application from '../modules/application.model.js';
-import {sendEmailToHR, applicantAcknowledgementEmail} from '../utils/emailServices.js'
+import {sendEmailToHR, applicantAcknowledgementEmail, sendRejectionEmail} from '../utils/emailServices.js'
 import axios from 'axios';
 import {getEmailFromJobID, getApplicationDeadline} from "./EmailController.js"
+import RejectionEmailJob from "../modules/RejectionEmailJob.model.js"
+import schedule from 'node-schedule';
 
 
 
@@ -117,6 +119,44 @@ export const postApplicationData = async (req, res) => {
           await sendEmailToHR(name, email, userId, Job_ID, hrEmail, applicationID);
           console.log("Applicant is Qualified! Sending email to HR");
         }
+        else{
+          try {
+            // Get the application deadline
+            const deadlineResponse = await getApplicationDeadline(Job_ID);
+            console.log(deadlineResponse.job_deadline)
+            const deadlineDate = new Date(deadlineResponse.job_deadline);
+            console.log(deadlineDate)
+            // Store the scheduled job in the database
+            const emailJob = await RejectionEmailJob.create({
+              Name: name,
+              Email: email,
+              Job_ID: Job_ID,
+              ScheduledDate: deadlineDate,
+              Sent: false
+            });
+            
+            console.log(`Rejection email scheduled for ${name} on ${deadlineDate}`);
+            
+            // Schedule the job - To test use this code (new Date(Date.now() + 10 * 1000) as the deadline
+            schedule.scheduleJob(deadlineDate, async () => {
+              try {
+                await sendRejectionEmail(name, email, Job_ID);
+                
+                // Update the job as sent
+                await RejectionEmailJob.update(
+                  { Sent: true },
+                  { where: { ID: emailJob.ID } }
+                );
+                
+                console.log(`Scheduled rejection email sent to ${email} for Job ID: ${Job_ID}`);
+              } catch (emailError) {
+                console.error(`Failed to send scheduled rejection email: ${emailError}`);
+              }
+            });
+          } catch (scheduleError) {
+            console.error(`Error scheduling rejection email: ${scheduleError}`);
+          }
+      }
       }catch(error){
         console.log("Error in applicant controller " + error)
         res.status(500).json({ 

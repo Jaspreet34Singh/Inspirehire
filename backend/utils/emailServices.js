@@ -53,6 +53,36 @@ export const sendEmailToHR = async (applicantName, applicantEmail, userID, jobId
     }
 };
 
+
+export const sendRejectionEmail = async (name, email, jobId) => {
+    try {
+      // Assuming you already have your transporter configured for Mailtrap
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: `Update Regarding Your Application (Job ID: ${jobId})`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee;">
+            <h2 style="color: #333;">Application Status Update</h2>
+            <p>Dear ${name},</p>
+            <p>Thank you for your interest in the position (Job ID: ${jobId}) and for taking the time to apply.</p>
+            <p>After carefully reviewing all applications, we regret to inform you that we have decided to pursue other candidates whose qualifications better match our current needs.</p>
+            <p>We appreciate your interest in our organization and wish you the best in your job search.</p>
+            <p>Best regards,</p>
+            <p>The Hiring Team</p>
+          </div>
+        `
+      };
+  
+      const info = await transporter.sendMail(mailOptions);
+      console.log(`Rejection email sent to ${email}: ${info.messageId}`);
+      return info;
+    } catch (error) {
+      console.error('Error sending rejection email:', error);
+      throw error;
+    }
+  };
+
 export default {
   applicantAcknowledgementEmail,
   sendEmailToHR
