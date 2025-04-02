@@ -10,8 +10,8 @@ const ReportsPage = () => {
   const [error, setError] = useState("");
 
   const handleGenerateReports = async () => {
-    if (!month || !year) {
-      setError("Please select both month and year.");
+    if (!year) {
+      setError("Please select year.");
       return;
     }
 
