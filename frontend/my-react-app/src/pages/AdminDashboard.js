@@ -12,7 +12,7 @@ const AdminDashboard = () => {
       {/* Gradient Box with Options */}
       <div className="gradient-box">
       <Link to="/create-hr" className="text-decoration-none">
-      <div className="option-box">Create HR Account</div>
+      <div className="option-box">Create HR/Admin Account</div>
       </Link>
         <Link to="/delete-job" className="text-decoration-none">
           <div className="option-box">Delete Job Posting</div>
@@ -24,6 +24,11 @@ const AdminDashboard = () => {
         <Link to="/reports" className="text-decoration-none">
           <div className="option-box">Report Generation</div>
         </Link>
+
+        <Link to="/delete-user" className="text-decoration-none">
+          <div className="option-box">Delete User Account</div>
+        </Link>
+
       </div>
     </div>
   );

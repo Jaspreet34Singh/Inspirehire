@@ -18,14 +18,15 @@ import ManageJobs from "./pages/ManageJobs";
 import EditJob from "./pages/EditJob.js";
 import ManageCategories from "./pages/ManageCategories";
 import DeleteJob from "./pages/DeleteJob.js";
-import CreateHR from "./pages/CreateHR.js";
+import CreateHR from "./pages/CreateHRorAdmin.js";
 import ChangePassword from "./pages/ChangePassword.js";
 import ApplicantPreferences from "./pages/ApplicantPreferrencePage.js"
 import ApplicantProfile from "./pages/ApplicantProfile.js";
 import ViewApplications from "./pages/ViewApplications.js";
 import EditProfile from "./pages/EditApplicantProfile.js";
 import ViewApplicantApplications from "./pages/ViewPreviousApplicationPage.js"
-
+import ReportsPage from "./pages/ReportsPage.js";
+import DeleteUser from "./pages/DeleteUser.js";
 
 function App() {
   return (
@@ -78,6 +79,8 @@ function App() {
             <Route path="/manage-categories" element={<ManageCategories />} />
             <Route path="/delete-job" element={<DeleteJob />} />
             <Route path="/create-hr" element={<CreateHR />} />
+            <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/delete-user" element={<DeleteUser />} />
           </Route>
           
           <Route element={<PrivateRoute allowedRoles={[3]} />}>

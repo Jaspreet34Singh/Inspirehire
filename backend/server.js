@@ -34,7 +34,6 @@ import { workerData } from "worker_threads";
 import ApplicantProfileRoute from "./routes/ApplicantProfileRoute.js";
 import viewApplicationRoutes from "./routes/viewApplicationRoutes.js";
 import ViewApplicantApplication from "./routes/ViewApplicantApplicationRoute.js"
-import JobNotificationRouter from "./routes/JobNotificationrouter.js"
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -153,10 +152,9 @@ app.use("/view-applications", viewApplicationRoutes);
 app.use("/admin", adminRoutes);
 app.use("/preferrence", preferrenceRouter)
 app.use("/viewApplication",ViewApplicantApplication)
+app.use("/reports", reportRoutes);
 
 app.use("/applicantProfile", ApplicantProfileRoute)
-
-app.use("/notifications", JobNotificationRouter)
 
 // Error handling middleware
 app.use((err, req, res, next) => {
