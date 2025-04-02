@@ -9,7 +9,6 @@ router.get("/applications/user/:userId", async (req, res) => {
     const { userId } = req.params;
     console.log("user id from view application route "+ userId)
     const applications = await Application.findAll({
-      where: { User_ID: userId },
       include: [{ model: JobPost }],
     });
     res.json(applications);

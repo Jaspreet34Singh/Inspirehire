@@ -21,8 +21,8 @@ const HRDashboard = () => {
           </Button>
         </Col>
         <Col md={4} className="mb-3">
-          <Button variant="warning" className="w-100" href="/modify-account">
-            Modify Account
+          <Button variant="warning" className="w-100" href="/hr-profile">
+            View Profile
           </Button>
         </Col>
         <Col md={4} className="mb-3">

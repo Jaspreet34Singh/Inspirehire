@@ -13,7 +13,7 @@ router.get('/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await User.findByPk(userId, {
-      attributes: ['User_ID', 'Name', 'Email', 'phone', 'DateOfBirth', 'Image']
+      attributes: ['User_ID', 'Name', 'Email', 'phone', 'DateOfBirth', 'Image',"WorkingID"]
     });
 
     if (!user) {
@@ -92,28 +92,32 @@ router.get('/:userId/preferences', async (req, res) => {
 router.put('/update/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
-    const { Name, Email, phone, DateOfBirth } = req.body;
-    
-    // Validate input
+    const { Name, Email, phone, DateOfBirth, WorkingID } = req.body;
+
     if (!Name || !Email || !phone) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
-    
-    // Find the user
+
     const user = await User.findByPk(userId);
-    
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    
-    // Update user
-    await user.update({
+
+    const updatedFields = {
       Name,
       Email,
       phone,
       DateOfBirth
-    });
-    
+    };
+
+    // Only allow HR to update WorkingID
+    if (user.Role_ID === 2 && WorkingID) {
+      updatedFields.WorkingID = WorkingID;
+    }
+
+    await user.update(updatedFields);
+
     res.status(200).json({ message: 'User profile updated successfully' });
   } catch (error) {
     console.error('Error updating user profile:', error);

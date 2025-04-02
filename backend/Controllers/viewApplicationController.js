@@ -1,6 +1,7 @@
 import Application from "../modules/application.model.js";
 import User from "../modules/userModule.js";
 import JobPost from "../modules/job.model.js";
+import JobCategory from "../modules/jobCategory.model.js";
 
 // Get all applications for jobs posted by this HR
 export const getHRApplications = async (req, res) => {
@@ -8,7 +9,7 @@ export const getHRApplications = async (req, res) => {
     const hrId = req.user.id;
 
     // Get all jobs posted by the HR
-    const jobs = await JobPost.findAll({ where: { USER_ID: hrId } });
+    const jobs = await JobPost.findAll({ });
     const jobIds = jobs.map((job) => job.JOB_ID);
 
     if (jobIds.length === 0) {
@@ -24,7 +25,13 @@ export const getHRApplications = async (req, res) => {
         },
         {
           model: JobPost,
-          attributes: ["Job_Title"]
+          attributes: ["Job_Title", "Job_Deadline"],
+          include: [
+            {
+              model: JobCategory,
+              attributes: ["Category_Name"]
+            }
+          ]
         }
       ]
     });

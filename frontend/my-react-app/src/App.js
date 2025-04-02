@@ -27,6 +27,8 @@ import EditProfile from "./pages/EditApplicantProfile.js";
 import ViewApplicantApplications from "./pages/ViewPreviousApplicationPage.js"
 import ReportsPage from "./pages/ReportsPage.js";
 import DeleteUser from "./pages/DeleteUser.js";
+import HRProfile from "./pages/HRProfile.js";
+import HRModifyProfile from "./pages/HRModifyProfile.js";
 
 function App() {
   return (
@@ -95,6 +97,8 @@ function App() {
           {/*HR only routes*/}
           <Route element={<PrivateRoute allowedRoles={[2]} />}>
             <Route path="/hr-dashboard" element={<HRDashboard />} />
+            <Route path="/hr-profile" element={<HRProfile />} />
+            <Route path="/hr-modify/:userId" element={<HRModifyProfile />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={[2]} />}>
           <Route path="/post-job" element={<JobPost />} />
