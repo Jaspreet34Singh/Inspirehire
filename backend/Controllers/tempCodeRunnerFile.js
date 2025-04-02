@@ -1,7 +1,6 @@
-import schedule from 'node-schedule';
+import JobPreference from "../modules/jobPreference.model.js";
+import User from "../modules/userModule.js"
+import axios from "axios"
 
-const testDate = new Date(Date.now() + 10 * 1000); // 10 seconds from now
-schedule.scheduleJob(testDate, () => {
-    console.log("🔥 Test job executed!");
-});
-console.log("Test job scheduled for 10 seconds later.");
+const JOB_ID = 50011
+await axios.post(`http://localhost:3000/notifications/new-job/${JOB_ID}`)

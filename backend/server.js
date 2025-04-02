@@ -35,6 +35,8 @@ import ApplicantProfileRoute from "./routes/ApplicantProfileRoute.js";
 import viewApplicationRoutes from "./routes/viewApplicationRoutes.js";
 import ViewApplicantApplication from "./routes/ViewApplicantApplicationRoute.js"
 import reportRoutes from "./routes/reportRoutes.js";
+import JobNotificationRouter from "./routes/JobNotificationrouter.js"
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -157,6 +159,7 @@ app.use("/reports", reportRoutes);
 app.use("/applicantProfile", ApplicantProfileRoute)
 
 
+app.use("/notifications", JobNotificationRouter)
 
 // Error handling middleware
 app.use((err, req, res, next) => {
