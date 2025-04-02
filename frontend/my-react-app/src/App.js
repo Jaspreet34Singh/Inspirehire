@@ -26,6 +26,7 @@ import ViewApplications from "./pages/ViewApplications.js";
 import EditProfile from "./pages/EditApplicantProfile.js";
 import ViewApplicantApplications from "./pages/ViewPreviousApplicationPage.js"
 import ReportsPage from "./pages/ReportsPage.js";
+import DeleteUser from "./pages/DeleteUser.js";
 
 function App() {
   return (
@@ -79,6 +80,7 @@ function App() {
             <Route path="/delete-job" element={<DeleteJob />} />
             <Route path="/create-hr" element={<CreateHR />} />
             <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/delete-user" element={<DeleteUser />} />
           </Route>
           
           <Route element={<PrivateRoute allowedRoles={[3]} />}>

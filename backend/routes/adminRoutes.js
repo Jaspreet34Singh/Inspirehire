@@ -3,6 +3,7 @@ import { createUserAccount } from "../Controllers/adminController.js";
 import { authenticate, authorize } from "../middleware/authMiddleware.js";
 import multer from "multer";
 import path from "path";
+import { deleteUserAccount } from "../Controllers/adminController.js";
 
 const router = express.Router();
 
@@ -35,5 +36,8 @@ const upload = multer({
 // ✅ Only Admins can create HR accounts
 router.post("/create-user", authenticate, authorize([1]), upload.single("image"), createUserAccount);
 
+router.post("/delete-user", authenticate, authorize([1]), deleteUserAccount);
+
 
 export default router;
+
