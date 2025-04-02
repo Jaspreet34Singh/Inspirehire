@@ -6,7 +6,7 @@ import { faBriefcase, faClipboardList, faUserPen } from '@fortawesome/free-solid
 
 
 const ApplicantDashboard = () => {
-
+  const userId = localStorage.getItem("User_ID")
   return (
     <Container className="py-5">
       <Row className="mb-4">
@@ -53,7 +53,7 @@ const ApplicantDashboard = () => {
               </Card.Text>
               <Button 
                 as={Link} 
-                to="/applications" 
+                to={`/applicant-PreviousApplications/${userId}`}
                 variant="outline-success" 
                 className="mt-auto w-100 py-2 fw-semibold"
               >

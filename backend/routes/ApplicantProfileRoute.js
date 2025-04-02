@@ -6,7 +6,6 @@ import WorkExp from '../modules/workExp.model.js';
 import JobPreference from '../modules/jobPreference.model.js';
 import JobCategory from '../modules/jobCategory.model.js';
 
-
 const router = express.Router();
 
 // Get user data
@@ -86,6 +85,309 @@ router.get('/:userId/preferences', async (req, res) => {
   } catch (error) {
     console.error('Error fetching preferences:', error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update user profile
+router.put('/update/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { Name, Email, phone, DateOfBirth } = req.body;
+    
+    // Validate input
+    if (!Name || !Email || !phone) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    
+    // Find the user
+    const user = await User.findByPk(userId);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Update user
+    await user.update({
+      Name,
+      Email,
+      phone,
+      DateOfBirth
+    });
+    
+    res.status(200).json({ message: 'User profile updated successfully' });
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    res.status(500).json({ message: 'Failed to update user profile' });
+  }
+});
+
+// Update education details
+router.put('/:userId/education/:eduId', async (req, res) => {
+  try {
+    const { userId, eduId } = req.params;
+    const { Degree, Start_Date, End_Date, InstitutionName, Field_Of_Study } = req.body;
+    
+    // Validate input
+    if (!Degree || !Start_Date || !InstitutionName || !Field_Of_Study) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    
+    // Find the education record
+    const eduRecord = await Education.findOne({
+      where: {
+        EduDetail_ID: eduId,
+        USER_ID: userId
+      }
+    });
+    
+    if (!eduRecord) {
+      return res.status(404).json({ message: 'Education record not found' });
+    }
+    
+    // Update education details
+    await eduRecord.update({
+      Degree,
+      Start_Date,
+      End_Date,
+      InstitutionName,
+      Field_Of_Study
+    });
+    
+    res.status(200).json({ message: 'Education details updated successfully' });
+  } catch (error) {
+    console.error('Error updating education details:', error);
+    res.status(500).json({ message: 'Failed to update education details' });
+  }
+});
+
+// Create education record
+router.post('/education', async (req, res) => {
+  try {
+    const { USER_ID, Degree, Start_Date, End_Date, InstitutionName, Field_Of_Study } = req.body;
+    
+    // Validate input
+    if (!USER_ID || !Degree || !Start_Date || !InstitutionName || !Field_Of_Study) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    
+    // Create education record
+    const newEducation = await Education.create({
+      USER_ID,
+      Degree,
+      Start_Date,
+      End_Date,
+      InstitutionName,
+      Field_Of_Study
+    });
+    
+    res.status(201).json({ 
+      message: 'Education record created successfully',
+      eduId: newEducation.EduDetail_ID
+    });
+  } catch (error) {
+    console.error('Error creating education record:', error);
+    res.status(500).json({ message: 'Failed to create education record' });
+  }
+});
+
+// Update job preference
+router.put('/:userId/preferences/:prefId', async (req, res) => {
+  try {
+    const { userId, prefId } = req.params;
+    const { Category_ID, JobType, JobLocation } = req.body;
+    
+    // Validate input
+    if (!Category_ID) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    
+    // Find the preference record
+    const prefRecord = await JobPreference.findOne({
+      where: {
+        JobPref_ID: prefId,
+        USER_ID: userId
+      }
+    });
+    
+    if (!prefRecord) {
+      return res.status(404).json({ message: 'Job preference record not found' });
+    }
+    
+    // Update preference
+    await prefRecord.update({
+      Category_ID,
+      JobType,
+      JobLocation
+    });
+    
+    res.status(200).json({ message: 'Job preference updated successfully' });
+  } catch (error) {
+    console.error('Error updating job preference:', error);
+    res.status(500).json({ message: 'Failed to update job preference' });
+  }
+});
+
+// Create job preference
+router.post('/job-preferences', async (req, res) => {
+  try {
+    const { USER_ID, Category_ID, JobType, JobLocation } = req.body;
+    
+    // Validate input
+    if (!USER_ID || !Category_ID) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    
+    // Create job preference
+    const newPreference = await JobPreference.create({
+      USER_ID,
+      Category_ID,
+      JobType: JobType || 'Full-time',
+      JobLocation: JobLocation || 'Remote'
+    });
+    
+    res.status(201).json({ 
+      message: 'Job preference created successfully',
+      prefId: newPreference.JobPref_ID
+    });
+  } catch (error) {
+    console.error('Error creating job preference:', error);
+    res.status(500).json({ message: 'Failed to create job preference' });
+  }
+});
+
+// Delete job preference
+router.delete('/:userId/preferences/:prefId', async (req, res) => {
+  try {
+    const { userId, prefId } = req.params;
+    
+    // Find the preference record
+    const prefRecord = await JobPreference.findOne({
+      where: {
+        JobPref_ID: prefId,
+        USER_ID: userId
+      }
+    });
+    
+    if (!prefRecord) {
+      return res.status(404).json({ message: 'Job preference record not found' });
+    }
+    
+    // Delete preference
+    await prefRecord.destroy();
+    
+    res.status(200).json({ message: 'Job preference deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting job preference:', error);
+    res.status(500).json({ message: 'Failed to delete job preference' });
+  }
+});
+
+// Update work experience
+router.put('/:userId/workexp/:workExpId', async (req, res) => {
+  try {
+    const { userId, workExpId } = req.params;
+    const { Job_Title, CompanyName, JobDescription, StartDate, EndDate } = req.body;
+    
+    // Validate input
+    if (!Job_Title || !CompanyName || !JobDescription || !StartDate) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    
+    // Find the work experience record
+    const workExpRecord = await WorkExp.findOne({
+      where: {
+        WorkExp_ID: workExpId,
+        USER_ID: userId
+      }
+    });
+    
+    if (!workExpRecord) {
+      return res.status(404).json({ message: 'Work experience record not found' });
+    }
+    
+    // Update work experience
+    await workExpRecord.update({
+      Job_Title,
+      CompanyName,
+      JobDescription,
+      StartDate,
+      EndDate
+    });
+    
+    res.status(200).json({ message: 'Work experience updated successfully' });
+  } catch (error) {
+    console.error('Error updating work experience:', error);
+    res.status(500).json({ message: 'Failed to update work experience' });
+  }
+});
+
+// Create work experience
+router.post('/work-experience', async (req, res) => {
+  try {
+    const { USER_ID, workExperience } = req.body;
+    
+    if (!USER_ID || !workExperience || !Array.isArray(workExperience) || workExperience.length === 0) {
+      return res.status(400).json({ message: 'Invalid input format' });
+    }
+    
+    const createdIds = [];
+    
+    // Insert each work experience record
+    for (const exp of workExperience) {
+      const { jobTitle, companyName, jobDescription, startDate, endDate } = exp;
+      
+      // Validate each work experience object
+      if (!jobTitle || !companyName || !jobDescription || !startDate) {
+        return res.status(400).json({ message: 'Missing required fields in work experience' });
+      }
+      
+      // Create work experience
+      const newWorkExp = await WorkExp.create({
+        USER_ID,
+        Job_Title: jobTitle,
+        CompanyName: companyName,
+        JobDescription: jobDescription,
+        StartDate: startDate,
+        EndDate: endDate
+      });
+      
+      createdIds.push(newWorkExp.WorkExp_ID);
+    }
+    
+    res.status(201).json({ 
+      message: 'Work experience records created successfully',
+      workExpIds: createdIds
+    });
+  } catch (error) {
+    console.error('Error creating work experience records:', error);
+    res.status(500).json({ message: 'Failed to create work experience records' });
+  }
+});
+
+// Delete work experience
+router.delete('/:userId/workexp/:workExpId', async (req, res) => {
+  try {
+    const { userId, workExpId } = req.params;
+    
+    // Find the work experience record
+    const workExpRecord = await WorkExp.findOne({
+      where: {
+        WorkExp_ID: workExpId,
+        USER_ID: userId
+      }
+    });
+    
+    if (!workExpRecord) {
+      return res.status(404).json({ message: 'Work experience record not found' });
+    }
+    
+    // Delete work experience
+    await workExpRecord.destroy();
+    
+    res.status(200).json({ message: 'Work experience deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting work experience:', error);
+    res.status(500).json({ message: 'Failed to delete work experience' });
   }
 });
 

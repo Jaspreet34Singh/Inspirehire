@@ -82,7 +82,7 @@ const JobPost = sequelize.define('JobPost', {
 
   JobPost.associate = (models) => {
     JobPost.belongsTo(User, { 
-      foreignKey: 'USEER_ID',
+      foreignKey: 'USER_ID',
       as: 'User', // Optional but recommended
       onDelete: 'CASCADE', // Optional: handles deletion behavior
       onUpdate: 'CASCADE'  // Optional: handles update behavior

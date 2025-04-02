@@ -22,7 +22,9 @@ import CreateHR from "./pages/CreateHR.js";
 import ChangePassword from "./pages/ChangePassword.js";
 import ApplicantPreferences from "./pages/ApplicantPreferrencePage.js"
 import ApplicantProfile from "./pages/ApplicantProfile.js";
-import ViewApplications from "./pages/ViewApplications";
+import ViewApplications from "./pages/ViewApplications.js";
+import EditProfile from "./pages/EditApplicantProfile.js";
+import ViewApplicantApplications from "./pages/ViewPreviousApplicationPage.js"
 
 
 function App() {
@@ -81,8 +83,10 @@ function App() {
           <Route element={<PrivateRoute allowedRoles={[3]} />}>
             <Route path="/applicant-dashboard" element={<ApplicantDashboard />} />
             <Route path="/applicant-profile" element={<ApplicantProfile />} />
+            <Route path="/applicant-modify/:userId" element={<EditProfile />} />
             <Route path="/apply-job/:job_id" element={< JobApplicationForm />} />
             <Route path="/applicantPreferrence" element={< ApplicantPreferences />} />
+            <Route path="/applicant-PreviousApplications/:userId" element={< ViewApplicantApplications />} />
 
           </Route>
           {/*HR only routes*/}

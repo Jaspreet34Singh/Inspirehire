@@ -94,7 +94,7 @@ const ApplicantProfile = () => {
             <Button 
                 variant="outline-light" 
                 className="rounded-pill px-4"
-                onClick={() => navigate(`/edit-profile/${userData.User_ID}`)}
+                onClick={() => navigate(`/applicant-modify/${userData.User_ID}`)}
                 >
                 Modify Profile
             </Button>
