@@ -1,35 +1,43 @@
-import User from "../modules/userModule.js"
-import bcrypt from "bcryptjs";
+import User from "../modules/userModule.js";
+import bcrypt from "bcrypt";
 
-export const createHRAccount = async (req, res) => {
+// Create Admin or HR
+export const createUserAccount = async (req, res) => {
   try {
-    const { name, email, phone, dateOfBirth } = req.body;
-    const defaultpassword = "password123";
-    const existing = await User.findOne({ where: { Email: email } });
-    if (existing) {
-      return res.status(400).json({ success: false, message: "Email already exists" });
+    const { name, email, phone, dateOfBirth, role, WorkingID } = req.body;
+    const image = req.file?.filename;
+
+    if (!name || !email || !phone || !dateOfBirth || !image || !role) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    const hashedPassword = await bcrypt.hash(defaultpassword, 10);
+    // HR needs WorkingID
+    if (Number(role) === 2 && !WorkingID) {
+      return res.status(400).json({ message: "WorkingID is required for HR" });
+    }
 
-    const newHR = await User.create({
+    const existing = await User.findOne({ where: { Email: email } });
+    if (existing) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    const hashedPassword = await bcrypt.hash("password123", 10);
+
+    const user = await User.create({
       Name: name,
       Email: email,
       Password: hashedPassword,
       Phone: phone,
       DateOfBirth: dateOfBirth,
-      Role_ID: 2, // HR
-      First_Login: true,
-      Image: "/uploads/profilePhotos/default.png"
+      Role_ID: Number(role),
+      Image: image,
+      First_Login: true, 
+      ...(Number(role) === 2 && { WorkingID }), // include only if HR
     });
 
-    res.status(201).json({
-      success: true,
-      message: "HR account created",
-      userId: newHR.User_ID,
-    });
+    res.status(201).json({ success: true, message: "User created", userId: user.User_ID });
   } catch (error) {
-    console.error("❌ HR creation error:", error);
-    res.status(500).json({ success: false, message: "Server error creating HR" });
+    console.error("❌ Error creating user:", error);
+    res.status(500).json({ message: "Failed to create user", error: error.message });
   }
 };
