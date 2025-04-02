@@ -2,6 +2,7 @@ import JobPost from "../modules/job.model.js";
 import JobCategory from "../modules/jobCategory.model.js";
 import { Op } from "sequelize";
 import sequelize from "../config/database.js";
+import axios from "axios"
 import Application from "../modules/application.model.js";
 
 // POST /jobs/categories
@@ -105,6 +106,8 @@ export const deleteCategory = async (req, res) => {
     await category.destroy();
 
     res.status(200).json({ success: true, message: "Category deleted successfully" });
+
+
   } catch (error) {
     console.error("❌ Error deleting category:", error);
     res.status(500).json({ success: false, message: "Failed to delete category", error: error.message });
@@ -193,8 +196,8 @@ export const createJobPost = async (req, res) => {
       deadline
     } = req.body;
 
-    const hrEmail = req.user.email; // ✅ Get email from token
-    console.log("🟢 HR Email:", hrEmail);
+    const hrEmail = req.user.email; //  Get email from token
+    console.log(" HR Email:", hrEmail);
 
 
     if (!hrEmail) {
@@ -215,9 +218,21 @@ export const createJobPost = async (req, res) => {
       Job_Deadline: deadline,
       Posted_Date: new Date()
     });
+    try {
+      // Make an internal API call to the notification endpoint
+      console.log(newJob.JOB_ID)
+      await axios.post(`http://localhost:3000/notifications/new-job/${newJob.JOB_ID}`,
+        {}
+      );
+      console.log(`✅ Job notification triggered for job ID ${newJob.JOB_ID}`);
+    } catch (notificationError) {
+      // Don't fail the job creation if notification fails
+      console.error("⚠️ Failed to send job notifications:", notificationError);
+    }
 
     res.status(201).json({ success: true, message: "Job posted successfully!", job: newJob });
-  } catch (error) {
+  } 
+   catch (error) {
     console.error("🔴 Job creation error:", error);
     res.status(500).json({ success: false, message: "Backend Error creating job", error: error.message });
   }
@@ -291,4 +306,3 @@ export const getHRJobs = async (req, res) => {
     });
   }
 };
-
