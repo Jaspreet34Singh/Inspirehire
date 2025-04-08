@@ -80,13 +80,7 @@ const ManageJobs = () => {
                   >
                     Edit
                   </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(job.JOB_ID)}
-                  >
-                    Delete
-                  </Button>
+                 
                 </td>
               </tr>
             ))
