@@ -29,6 +29,7 @@ import ReportsPage from "./pages/ReportsPage.js";
 import DeleteUser from "./pages/DeleteUser.js";
 import HRProfile from "./pages/HRProfile.js";
 import HRModifyProfile from "./pages/HRModifyProfile.js";
+import ForgotPassword from "./pages/ForgotPassword.js";
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
           <Route path="/register" element={<UserRegister />} />
           <Route path="/jobs/:id" element={<JobDetails />}/>
           <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* Protected Routes (Only accessible if logged in) */}
           <Route element={<PrivateRoute allowedRoles={[1]} />}>

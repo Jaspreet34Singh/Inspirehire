@@ -24,6 +24,8 @@ const ViewApplications = () => {
   const [filterDate, setFilterDate] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
 
+  const baseUrl = "http://localhost:3000";
+
   const fetchApplications = async () => {
     try {
       const res = await axios.get("http://localhost:3000/view-applications", {
@@ -56,6 +58,20 @@ const ViewApplications = () => {
 
     setFilteredApplications(filtered);
   }, [searchName, filterDate, filterCategory, applications]);
+
+  // Format the file URL to ensure it has the correct base URL
+  const getFileUrl = (path) => {
+    if (!path) return null;
+    
+    // If the path already includes http/https, return it as is
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    
+    // If path starts with a slash, make sure we don't double up
+    const formattedPath = path.startsWith('/') ? path : `/${path}`;
+    return `${baseUrl}${formattedPath}`;
+  };
 
   if (loading) return <Spinner animation="border" className="mt-4" />;
   if (error) return <Alert variant="danger">{error}</Alert>;
@@ -140,14 +156,40 @@ const ViewApplications = () => {
               <td>{app.FieldRelatedExp} yrs</td>
               <td>{app.EducationExp}</td>
               <td>
-                {app.Resume ? (
-                  <a href={app.Resume} target="_blank" rel="noreferrer">View</a>
-                ) : "No Resume"}
+              {app.Resume ? (
+                    <a 
+                      href={getFileUrl(app.Resume)} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      onClick={(e) => {
+                        if (!app.Resume.startsWith('http')) {
+                          e.preventDefault();
+                          window.open(getFileUrl(app.Resume), '_blank');
+                        }
+                      }}
+                    >
+                      View
+                    </a>
+                  ) : "No Resume"}
+
               </td>
               <td>
-                {app.CoverLetter ? (
-                  <a href={app.CoverLetter} target="_blank" rel="noreferrer">View</a>
-                ) : "No Cover"}
+              {app.CoverLetter ? (
+                    <a 
+                      href={getFileUrl(app.CoverLetter)} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      onClick={(e) => {
+                        if (!app.CoverLetter.startsWith('http')) {
+                          e.preventDefault();
+                          window.open(getFileUrl(app.CoverLetter), '_blank');
+                        }
+                      }}
+                    >
+                      View
+                    </a>
+                  ) : "No Cover"}
+
               </td>
             </tr>
           ))}

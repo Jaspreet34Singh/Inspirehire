@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../modules/userModule.js";
 import { authenticate } from "../middleware/authMiddleware.js";
+import { verifySecurityAnswer, resetPassword } from "../Controllers/forgotPasswordController.js";
 
 
 const router = express.Router();
@@ -42,6 +43,9 @@ router.post("/login", async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+router.post("/verify-security-question", verifySecurityAnswer);
+router.post("/reset-password", resetPassword);
 
 router.put("/change-password", authenticate, async (req, res) => {
     const userId = req.user?.id;

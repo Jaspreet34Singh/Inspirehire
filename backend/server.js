@@ -127,7 +127,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Routes
 app.use("/register/form-data", userRoutes); 

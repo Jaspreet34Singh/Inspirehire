@@ -96,6 +96,10 @@ const Login = () => {
         <button type="submit" className="btn btn-primary w-100">
           Login
         </button>
+        <div className="text-center mt-3">
+  
+</div>
+
       </form>
     </div>
   );
